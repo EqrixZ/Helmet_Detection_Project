@@ -38,10 +38,18 @@ def detect_objects_from_webcam():
             track_ids = results[0].boxes.id.int().cpu().tolist()
 
             for box, class_id, track_id in zip(boxes, class_ids, track_ids):
-                c = names[class_id]
-                x1, y1, x2, y2 = box
-                cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
-                cv2.putText(frame, f'{track_id} - {c}', (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 255), 2)
+                    c = names[class_id]
+                    x1, y1, x2, y2 = box
+                    
+                    if c == 'Helmet':
+                        color = (0, 255, 0)
+                    elif c == 'Head':
+                        color = (0, 0, 255)
+                    else:
+                        color = (255, 255, 0)
+                    
+                    cv2.rectangle(frame, (x1, y1), (x2, y2), color, 2)
+                    cv2.putText(frame, f'{track_id} - {c}', (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
 
         _, buffer = cv2.imencode('.jpg', frame)
         frame_bytes = buffer.tobytes()
@@ -99,8 +107,16 @@ def detect_objects_from_video(video_path, filename):
                 for box, class_id, track_id in zip(boxes, class_ids, track_ids):
                     c = names[class_id]
                     x1, y1, x2, y2 = box
-                    cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
-                    cv2.putText(frame, f'{track_id} - {c}', (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 255), 2)
+                    
+                    if c == 'Helmet':
+                        color = (0, 255, 0)
+                    elif c == 'Head':
+                        color = (0, 0, 255)
+                    else:
+                        color = (255, 255, 0)
+                    
+                    cv2.rectangle(frame, (x1, y1), (x2, y2), color, 2)
+                    cv2.putText(frame, f'{track_id} - {c}', (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
 
             out.write(frame)
 
