@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Detection Result</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap');
+        
+        :root {
+            --bg-color: #f4f4f4;
+            --text-color: #222222;
+            --card-bg: #ffffff;
+            --border-color: #cccccc;
+            --btn-bg: #222222;
+            --btn-text: #ffffff;
+            --btn-hover: #444444;
+        }
+
+        body.dark-mode {
+            --bg-color: #121212;
+            --text-color: #eeeeee;
+            --card-bg: #1e1e1e;
+            --border-color: #444444;
+            --btn-bg: #eeeeee;
+            --btn-text: #121212;
+            --btn-hover: #cccccc;
+        }
+
+        body { font-family: 'Kanit', sans-serif; background-color: var(--bg-color); color: var(--text-color); margin: 0; display: flex; flex-direction: column; align-items: center; padding-top: 30px; transition: background-color 0.3s, color 0.3s; }
+        h1 { margin-bottom: 20px; }
+        .video-container { background-color: var(--card-bg); padding: 15px; border-radius: 15px; border: 1px solid var(--border-color); box-shadow: 0 8px 25px rgba(0,0,0,0.05); margin-bottom: 20px; transition: background-color 0.3s, border-color 0.3s; }
+        img { max-width: 100%; height: auto; border-radius: 10px; background-color: #000; }
+        .info { font-weight: 600; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; opacity: 0.8;}
+        .btn-back { padding: 10px 25px; background-color: var(--btn-bg); color: var(--btn-text); text-decoration: none; border-radius: 8px; font-weight: 600; transition: 0.3s; border: 1px solid var(--btn-bg);}
+        .btn-back:hover { background-color: var(--btn-hover); transform: translateY(-2px);}
+
+        .theme-toggle { position: absolute; top: 20px; right: 20px; background: transparent; border: 1px solid var(--text-color); color: var(--text-color); padding: 8px 15px; border-radius: 20px; cursor: pointer; font-family: 'Kanit', sans-serif; font-weight: 400; transition: 0.3s; opacity: 0.8; }
+        .theme-toggle:hover { opacity: 1; background: var(--text-color); color: var(--bg-color); }
+    </style>
+</head>
+<body>
+    <button id="themeToggle" class="theme-toggle">Dark Mode</button>
+
+    <h1>ผลลัพธ์การตรวจจับวิดีโอ</h1>
+    <div class="video-container">
+        <img src="{{ url_for('video_feed', filename=filename) }}" alt="Processed Video">
+    </div>
+    <div class="info">✔️ กำลังประมวลผลและเล่นวิดีโอ</div>
+    <a href="/" class="btn-back">กลับหน้าหลัก</a>
+
+    <script>
+        const toggleBtn = document.getElementById('themeToggle');
+        const body = document.body;
+
+        if (localStorage.getItem('theme') === 'dark') {
+            body.classList.add('dark-mode');
+            toggleBtn.innerText = 'Light Mode';
+        }
+
+        toggleBtn.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            if (body.classList.contains('dark-mode')) {
+                localStorage.setItem('theme', 'dark');
+                toggleBtn.innerText = 'Light Mode';
+            } else {
+                localStorage.setItem('theme', 'light');
+                toggleBtn.innerText = 'Dark Mode';
+            }
+        });
+    </script>
+</body>
+</html>

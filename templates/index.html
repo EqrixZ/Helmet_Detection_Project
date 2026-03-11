@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Helmet Detection</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap');
+        
+        /* ตั้งค่าตัวแปรสีสำหรับ Light Mode */
+        :root {
+            --bg-color: #f4f4f4;
+            --text-color: #222222;
+            --card-bg: #ffffff;
+            --border-color: #cccccc;
+            --btn-bg: #222222;
+            --btn-text: #ffffff;
+            --btn-hover: #444444;
+            --btn-outline: transparent;
+        }
+
+        /* ตั้งค่าตัวแปรสีสำหรับ Dark Mode */
+        body.dark-mode {
+            --bg-color: #121212;
+            --text-color: #eeeeee;
+            --card-bg: #1e1e1e;
+            --border-color: #444444;
+            --btn-bg: #eeeeee;
+            --btn-text: #121212;
+            --btn-hover: #cccccc;
+            --btn-outline: #555555;
+        }
+
+        body { font-family: 'Kanit', sans-serif; background-color: var(--bg-color); color: var(--text-color); height: 100vh; margin: 0; display: flex; justify-content: center; align-items: center; transition: background-color 0.3s, color 0.3s; }
+        .card { background-color: var(--card-bg); padding: 40px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 1px solid var(--border-color); text-align: center; width: 100%; max-width: 500px; position: relative; transition: background-color 0.3s, border-color 0.3s; }
+        h1 { margin-bottom: 10px; }
+        p { margin-bottom: 30px; opacity: 0.8; }
+        .upload-area { border: 2px dashed var(--border-color); padding: 20px; border-radius: 10px; margin-bottom: 20px; transition: border-color 0.3s; display: flex; justify-content: center; align-items: center;}
+        input[type="file"] { font-family: 'Kanit', sans-serif; color: var(--text-color); cursor: pointer;}
+        .btn { padding: 12px 20px; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; text-decoration: none; border: 1px solid var(--btn-outline); font-family: 'Kanit', sans-serif; transition: all 0.2s ease; display: block; width: 100%; box-sizing: border-box; margin-top: 15px; }
+        .btn-primary { align-items: center; background-color: var(--btn-bg); color: var(--btn-text); }
+        .btn-primary:hover { background-color: var(--btn-hover); transform: translateY(-2px); }
+        
+        .divider { margin: 25px 0; font-size: 14px; position: relative; opacity: 0.6; }
+        .divider::before, .divider::after { content: ""; position: absolute; top: 50%; width: 40%; height: 1px; background: var(--text-color); opacity: 0.3; }
+        .divider::before { left: 0; } .divider::after { right: 0; }
+        
+        /* ปุ่มสลับโหมด */
+        .theme-toggle { position: absolute; top: 20px; right: 20px; background: transparent; border: 1px solid var(--text-color); color: var(--text-color); padding: 8px 15px; border-radius: 20px; cursor: pointer; font-family: 'Kanit', sans-serif; font-weight: 400; transition: 0.3s; opacity: 0.8; }
+        .theme-toggle:hover { opacity: 1; background: var(--text-color); color: var(--bg-color); }
+    </style>
+</head>
+<body>
+    <button id="themeToggle" class="theme-toggle">Dark Mode</button>
+
+    <div class="card">
+        <h1>👷‍♂️ AI Helmet Detection</h1>
+        <p>ระบบตรวจจับหมวกนิรภัยด้วย AI</p>
+
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <div class="upload-area">
+                <input type="file" name="file" accept="video/mp4, video/avi, video/mov" required>
+            </div>
+            <button type="submit" class="btn btn-primary">อัปโหลดและประมวลผลวิดีโอ</button>
+        </form>
+
+        <div class="divider">หรือ</div>
+
+        <a href="/start_webcam" class="btn btn-primary" style="background-color: transparent; border: 2px solid var(--btn-bg); color: var(--text-color);">
+            เปิดกล้องสแกนสด (Webcam)
+        </a>
+    </div>
+
+    <script>
+        const toggleBtn = document.getElementById('themeToggle');
+        const body = document.body;
+
+        // เช็คสถานะเก่าจาก Local Storage
+        if (localStorage.getItem('theme') === 'dark') {
+            body.classList.add('dark-mode');
+            toggleBtn.innerText = 'Light Mode';
+        }
+
+        toggleBtn.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            if (body.classList.contains('dark-mode')) {
+                localStorage.setItem('theme', 'dark');
+                toggleBtn.innerText = 'Light Mode';
+            } else {
+                localStorage.setItem('theme', 'light');
+                toggleBtn.innerText = 'Dark Mode';
+            }
+        });
+    </script>
+</body>
+</html>
